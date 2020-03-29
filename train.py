@@ -15,6 +15,9 @@ from datetime import datetime
 
 import tensorflow as tf
 
+from parameters import *
+from model import *
+
 
 ################################################################################
 # Main
@@ -48,3 +51,7 @@ if __name__ == "__main__":
     print(f'Shape of test labels: {test_labels.shape}')
 
     # ----- MODEL ----- #
+    input_shape = (IMAGE_ROWS, IMAGE_COLS, IMAGE_CHANNELS)
+
+    model = build_cnn(input_shape)
+    model.summary()
