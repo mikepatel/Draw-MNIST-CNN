@@ -86,3 +86,15 @@ if __name__ == "__main__":
     plt.grid()
     plt.legend(loc="lower right")
     plt.savefig(output_dir + "\\Training Accuracy")
+
+    # evaluate model accuracy to determine overfitting
+    print(f'\n# ----- TEST ACCURACY ----- #')
+    test_loss, test_accuracy = model.evaluate(
+        x=test_images,
+        y=test_labels,
+        verbose=0
+    )
+    print(f'Test accuracy: {test_accuracy:.6f}')
+
+    # save model
+    model.save(os.path.join(output_dir, "saved_model"))
