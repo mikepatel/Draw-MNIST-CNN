@@ -54,4 +54,9 @@ if __name__ == "__main__":
     input_shape = (IMAGE_ROWS, IMAGE_COLS, IMAGE_CHANNELS)
 
     model = build_cnn(input_shape)
+    model.compile(
+        loss=tf.keras.losses.sparse_categorical_crossentropy,
+        optimizer=tf.keras.optimizers.Adam(),
+        metrics=["accuracy"]
+    )
     model.summary()
