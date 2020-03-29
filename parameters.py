@@ -9,7 +9,7 @@ File description:
     For model parameters
 """
 ################################################################################
-NUM_EPOCHS = 1
+NUM_EPOCHS = 3
 BATCH_SIZE = 64
 DROP_RATE = 0.3
 IMAGE_ROWS = 28

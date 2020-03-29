@@ -12,6 +12,7 @@ File description:
 # Imports
 import os
 from datetime import datetime
+import matplotlib.pyplot as plt
 
 import tensorflow as tf
 
@@ -42,6 +43,11 @@ if __name__ == "__main__":
     test_images = test_images[half_point:]
     test_labels = test_labels[half_point:]
 
+    # reshape images
+    train_images = train_images.reshape(-1, IMAGE_ROWS, IMAGE_COLS, IMAGE_CHANNELS)
+    validation_images = validation_images.reshape(-1, IMAGE_ROWS, IMAGE_COLS, IMAGE_CHANNELS)
+    test_images = test_images.reshape(-1, IMAGE_ROWS, IMAGE_COLS, IMAGE_CHANNELS)
+
     # shapes of data sets
     print(f'Shape of training images: {train_images.shape}')
     print(f'Shape of training labels: {train_labels.shape}')
@@ -60,3 +66,23 @@ if __name__ == "__main__":
         metrics=["accuracy"]
     )
     model.summary()
+
+    history = model.fit(
+        x=train_images,
+        y=train_labels,
+        batch_size=BATCH_SIZE,
+        epochs=NUM_EPOCHS,
+        steps_per_epoch=train_images.shape[0] // BATCH_SIZE,
+        validation_data=(validation_images, validation_labels)
+    )
+
+    # plot accuracy
+    plt.plot(history.history["accuracy"], label="accuracy")
+    plt.plot(history.history["val_accuracy"], label="val_accuracy")
+    plt.title("Training Accuracy")
+    plt.xlabel("Epoch")
+    plt.ylabel("Accuracy")
+    plt.ylim([0.0, 1.1])
+    plt.grid()
+    plt.legend(loc="lower right")
+    plt.savefig(output_dir + "\\Training Accuracy")
