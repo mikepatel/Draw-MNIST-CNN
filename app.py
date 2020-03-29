@@ -11,6 +11,7 @@ File description:
 """
 ################################################################################
 # Imports
+import os
 import pygame
 
 
@@ -70,6 +71,7 @@ if __name__ == "__main__":
                 DRAW = False
 
                 # save current screen image to feed into classifier
+                pygame.image.save(screen, os.path.join(os.getcwd(), "saved_images\\input.png"))
 
                 # classify saved image
 
