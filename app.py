@@ -24,6 +24,7 @@ SCREEN_WIDTH = 500
 SCREEN_HEIGHT = 500
 WHITE = [255, 255, 255]
 BLACK = [0, 0, 0]
+GREEN = [0, 128, 0]
 RADIUS = 25
 DRAW = False
 LAST_POS = (0, 0)
@@ -46,6 +47,11 @@ def roundline(surface, color, start, end, radius=1):
         pygame.draw.circle(surface, color, (x, y), radius)
 
 
+# divide screen in half (draw, prediction)
+def divide_screen(surface):
+    pygame.draw.line(surface, GREEN, [SCREEN_WIDTH, 0], [SCREEN_WIDTH, SCREEN_HEIGHT], 10)
+
+
 ################################################################################
 # Main
 if __name__ == "__main__":
@@ -55,7 +61,8 @@ if __name__ == "__main__":
     pygame.init()
 
     # set up drawing window
-    screen = pygame.display.set_mode(size=[SCREEN_WIDTH, SCREEN_HEIGHT])
+    screen = pygame.display.set_mode(size=[2*SCREEN_WIDTH, SCREEN_HEIGHT])
+    divide_screen(screen)
 
     while not DONE:
         for event in pygame.event.get():
@@ -66,6 +73,7 @@ if __name__ == "__main__":
             # clear screen
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT_CLICK:
                 screen.fill(BLACK)
+                divide_screen(screen)
 
             # start drawing using mouse
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT_CLICK:
@@ -83,15 +91,19 @@ if __name__ == "__main__":
             if event.type == pygame.MOUSEBUTTONUP and event.button == LEFT_CLICK:
                 DRAW = False
 
-                # save current screen image to feed into classifier
+                # crop and save drawn portion
                 saved_image_filepath = os.path.join(os.getcwd(), "saved_images\\saved.png")
-                pygame.image.save(screen, saved_image_filepath)
+                drawn_image = pygame.Surface((SCREEN_WIDTH-10, SCREEN_HEIGHT-10))
+                drawn_image.blit(screen, (0, 0), (0, 0, SCREEN_WIDTH-10, SCREEN_HEIGHT-10))
+                pygame.image.save(drawn_image, saved_image_filepath)
+
+                # feed saved image into classifier
                 image = Image.open(saved_image_filepath).convert("L")  # convert to greyscale
 
                 # resize image
                 image = image.resize((28, 28))
 
-                # normalize image
+                # turn image into an array
                 image = np.array(image).astype(np.float32)
 
                 # reshape: (1, 28, 28, 1)
@@ -99,9 +111,12 @@ if __name__ == "__main__":
 
                 # classify saved image
                 prediction = model.predict(image)
-                print(np.argmax(prediction))
+                label = np.argmax(prediction)
 
-                # display prediction in secondary screen
+                # display prediction in right half of the screen
+                font = pygame.font.SysFont("Arial", 144)
+                text_surface = font.render(str(label), False, GREEN)
+                screen.blit(text_surface, (int(SCREEN_WIDTH*1.5), int(SCREEN_HEIGHT*0.35)))
 
             pygame.display.flip()
 
