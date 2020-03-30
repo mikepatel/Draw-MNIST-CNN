@@ -15,6 +15,8 @@ import os
 import pygame
 from PIL import Image
 
+import tensorflow as tf
+
 
 ################################################################################
 SCREEN_WIDTH = 500
@@ -44,6 +46,9 @@ def roundline(surface, color, start, end, radius=1):
 ################################################################################
 # Main
 if __name__ == "__main__":
+    # load classifier model
+    model = tf.keras.models.load_model(os.path.join(os.getcwd(), "saved_model"))
+
     pygame.init()
 
     # set up drawing window
