@@ -23,6 +23,10 @@ python app.py
 ```
 
 ## Results
+The left hand side is what the user draws on screen. A prediction is made and displayed in the right hand side.
 ### Preliminary Results
+<img src="https://github.com/mikepatel/Draw-MNIST-CNN/blob/master/saved_images/result_3.PNG" width="1000" height="500">
+<img src="https://github.com/mikepatel/Draw-MNIST-CNN/blob/master/saved_images/result_4.PNG" width="1000" height="500">
+<img src="https://github.com/mikepatel/Draw-MNIST-CNN/blob/master/saved_images/result_6.PNG" width="1000" height="500">
 
 ### Visualizations
