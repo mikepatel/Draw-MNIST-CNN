@@ -13,6 +13,7 @@ File description:
 # Imports
 import os
 import pygame
+from PIL import Image
 
 
 ################################################################################
@@ -71,7 +72,13 @@ if __name__ == "__main__":
                 DRAW = False
 
                 # save current screen image to feed into classifier
-                pygame.image.save(screen, os.path.join(os.getcwd(), "saved_images\\input.png"))
+                saved_image_filepath = os.path.join(os.getcwd(), "saved_images\\saved.png")
+                pygame.image.save(screen, saved_image_filepath)
+                image = Image.open(saved_image_filepath)
+
+                # resize image
+                image = image.resize((28, 28))
+                image.save(saved_image_filepath)
 
                 # classify saved image
 
