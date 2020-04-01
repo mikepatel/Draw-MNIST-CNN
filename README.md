@@ -2,6 +2,7 @@
 An interactive MNIST classifier
 
 ## Data
+* MNIST dataset
 
 ## File Descriptions
 * [app.py](https://github.com/mikepatel/Draw-MNIST-CNN/blob/master/app.py) - for running pygame window
